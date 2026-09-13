@@ -52,9 +52,13 @@ class SocketService {
     if (!this.token) return;
     this.setState(this.attempt === 0 ? "connecting" : "reconnecting");
 
-    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const host = import.meta.env.DEV ? "localhost:4000" : window.location.host;
-    const url = `${protocol}://${host}/ws?token=${encodeURIComponent(this.token)}`;
+    const wsBase =
+  import.meta.env.VITE_WS_URL ||
+  (import.meta.env.DEV
+    ? "ws://localhost:4000"
+    : `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}`);
+
+const url = `${wsBase}/ws?token=${encodeURIComponent(this.token)}`;
 
     const ws = new WebSocket(url);
     this.ws = ws;
