@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: "Manrope", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: theme("colors.ink.300") transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: theme("colors.ink.200");
+  border-radius: 999px;
+}
+
+.dark *::-webkit-scrollbar-thumb {
+  background-color: theme("colors.ink.700");
+}
+
+:focus-visible {
+  outline: 2px solid theme("colors.accent.400");
+  outline-offset: 2px;
+}
