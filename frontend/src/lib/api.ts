@@ -101,12 +101,20 @@ export const api = {
           if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
         };
         xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            resolve(JSON.parse(xhr.responseText));
-          } else {
-            reject(new ApiError("Upload failed", xhr.status));
-          }
-        };
+  if (xhr.status >= 200 && xhr.status < 300) {
+    const response = JSON.parse(xhr.responseText) as { attachment: Attachment };
+
+    const apiOrigin = BASE.replace(/\/api\/?$/, "");
+
+    if (response.attachment.url.startsWith("/")) {
+      response.attachment.url = `${apiOrigin}${response.attachment.url}`;
+    }
+
+    resolve(response);
+  } else {
+    reject(new ApiError("Upload failed", xhr.status));
+  }
+};
         xhr.onerror = () => reject(new ApiError("Upload failed", 0));
         xhr.send(form);
       }),
